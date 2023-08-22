@@ -1,9 +1,27 @@
 //imports express.js framework using require function
-const express = require ('express');
+const express = require('express');
 //initializes an instance of express to create routes and handle requests
 const app = express();
 //server listens to port 3000
 const port = 3000;
+
+//array of magic 8 Ball responses
+const magic8BallResponses = [
+    "It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"
+
+];
+
+//route handling GET request with question params
+app.get('/magic/:question', (req, res) => {
+    //retrieves captured question value; %20 space holder
+    const question = req.params.question.replace(/%20/g, ' ');
+    //generates the randome response
+    const randomResponse = magic8BallResponses[Math.floor(Math.random() * magic8BallResponses.length)];
+    //creates the response to question
+    const response = `<h1>Your Question: ${question}</h1><h>Magic 8 Ball Response: ${randomResponse}</h1>`;
+    //sends response back to the client
+    res.send(response);
+})
 
 //route handling GET requests
 app.get('/getting', (req, res) => {
@@ -18,7 +36,7 @@ app.get('/greeting/:name', (req, res) => {
     //greeting message with captured name
     const greeting = `What's up, ${name}!`;
     //sends greeting back to the client
-    res.send(greeting)   ;
+    res.send(greeting);
 })
 
 //route handling GET requests with total and tipPercentage parameter
